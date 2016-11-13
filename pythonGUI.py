@@ -12,39 +12,44 @@ class MyFirstGUI:
 		#self.label.pack()
 
 		self.startVideoCapture = Button(master, text="Start", command=self.startVideo)
-		#self.greet_button.pack()
+		self.startVideoCapture.pack()
 
-		self.stopVideoCapture = Button(master, text="Stop", command=self.stopVideo)
+		# self.stopVideoCapture = Button(master, text="Stop", command=self.stopVideo)
 		#self.close_button.pack()
 
-		self.label.grid(columnspan=2)
-		self.startVideoCapture.grid(row=1)
-		self.stopVideoCapture.grid(row=1, column=1)
+		# self.label.grid(columnspan=2)
+		# self.startVideoCapture.grid(row=1)
+		# self.stopVideoCapture.grid(row=1, column=1)
+
+		self.cap = None
 
 	def startVideo(self):
-		cap = cv2.VideoCapture(0)
-
+		self.cap = cv2.VideoCapture(0)
+		print("Something is happening!!!\n")
+		print(self.cap)
 		while(True):
-		    # Capture frame-by-frame
-		    ret, frame = cap.read()
+			# Capture frame-by-frame
+			ret, frame = self.cap.read()
+			print("Ret = " + str(ret) + "\n")
+			print("Frame = " + str(frame) + "\n")
+			    # Our operations on the frame come here
+			if frame is not None:
+				cv2.imshow("preview", frame)
+				rval, frame = vc.read()
 
-		    # Our operations on the frame come here
-		    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+			if cv2.waitKey(1) & 0xFF == ord('q'):
+				break
 
-		    # Display the resulting frame
-		    cv2.imshow('frame',gray)
-		    if cv2.waitKey(1) & 0xFF == ord('q'):
-		        break
-
-	def stopVideo(self):
-		# When everything done, release the capture
-		cap.release()
+			# if (not self.cap.isOpened()):
+			# 	self.cap.open(0)
+			# 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+			#
+			# # Display the resulting frame
+			# cv2.imshow('frame',gray)
+			# if cv2.waitKey(1) & 0xFF == ord('q'):
+			# 	break
+		self.cap.release()
 		cv2.destroyAllWindows()
-
-
-
-
-
 
 
 root = Tk()
